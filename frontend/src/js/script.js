@@ -32,7 +32,7 @@ async function renderProducts(dados) {
 
   for (let i = 0; i < dados.length; i++){
 
-    const id_product = dados[i].id_product;
+    const id_product = dados[i].id;
     const name       = dados[i].name;
     const price      = dados[i].price;
     const image      = dados[i].image;
@@ -57,17 +57,19 @@ async function renderProducts(dados) {
 }
 
 async function addToItems(id_product) {
+  
   const res = await fetch(`http://localhost:3003/item`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
-    body: JSON.stringify({ id_product, quantity: 1 }),
-    
+    body: JSON.stringify({ id_product, quantity: 1 })
   })
+  
 
-  const data = await res.json();
-  alert(data.message);
+  const resultado = await res.json();
+  alert(resultado.message);
 }
 
 async function login() {
@@ -83,10 +85,24 @@ async function login() {
     body: JSON.stringify(valores)
   })
   
-  const data = await res.json();
+  const resultado = await res.json();
     
-  if (data.token) {
-    localStorage.setItem('token', data.token);
-    alert('Logado com sucesso!');
+  if (res.status == 200) {
+    localStorage.setItem('token', resultado.token);
+    localStorage.setItem('userName', resultado.name);
+    console.log(resultado);
+    console.log('Logado com sucesso!');
   }
+  
+    popup.classList.remove('active');
 }
+
+function getStatus() {
+    const status = localStorage.getItem('codigousuario');
+
+    if (status > 0) {
+        return true
+    } else {
+        return false
+    }
+};
