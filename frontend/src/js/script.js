@@ -7,6 +7,7 @@ const carrinho = document.getElementById('carrinho');
 const fecharCarrinho = document.getElementById('fecharCarrinho');
 
 getProducts()
+getPurchase()
 renderPerfil()
 
 fecharLogin.addEventListener('click', () => {
@@ -32,7 +33,6 @@ fecharCarrinho.addEventListener('click', () => {
 })
 
 async function getPurchase() {
-
   const res = await fetch(`http://localhost:3003/item`, {
     method: 'GET',
     headers: {
@@ -45,19 +45,46 @@ async function getPurchase() {
   let resultado = await res.json();
   console.log(resultado)
 
-  renderPurchase(resultado)
+  renderPurchase(resultado.items || [])
 }
 
-// async function renderPurchase(resultado) {
-//   const carrinhoItems = document.getElementById('carrinhoItems');
-//   html = '';
+async function renderPurchase(items) {
+  const carrinhoItems = document.getElementById('carrinhoItems');
 
-//   for (let i = 0; < resultado.length; i++) {
-//     html += `
-        
-//     `;
-//   }
-// }
+  let html = '';
+
+  if (!items || items.length === 0) {
+    carrinhoItems.innerHTML = '<p>Carrinho vazio</p>';
+    return;
+  }
+  
+  for (let i = 0; i < items.length; i++) {
+    
+    const price    = items[i].original_price;
+    const quantity = items[i].quantity;
+    let all = price * quantity;
+    
+      html += `
+      <div class="card">
+        <img src="${items[i].image}" alt="">
+        <div class="infos-prod">
+        <div class="name">${items[i].name}</div>
+        <div class="price">R$ ${items[i].original_price}</div>
+        </div>
+        <div class="acoes">
+          <button class="delete" data-id="${items[i].id}"><i class="fas fa-trash"></i></button>
+          <div class="quantity">
+            <button class="remove" data-id="${items[i].id}">-</button>
+            <span class="quantity">${items[i].quantity}</span>
+            <button class="add" data-id="${items[i].id}">+</button>
+          </div>
+        </div>
+        <span>R$ ${all}</span>
+      </div>
+      `;
+    }
+    carrinhoItems.innerHTML = html;
+}
 
 async function getProducts() {
   let url = 'http://localhost:3003/product';
@@ -65,7 +92,7 @@ async function getProducts() {
   const res = await fetch(url);
 
   let response = await res.json();
-
+  
   // renderProducts(JSON.stringify(response));
   renderProducts(response);
 }
@@ -77,20 +104,22 @@ async function renderProducts(dados) {
 
   for (let i = 0; i < dados.length; i++){
 
-    const id_product = dados[i].id;
-    const name       = dados[i].name;
-    const price      = dados[i].price;
-    const image      = dados[i].image;
+    const id_product  = dados[i].id;
+    const name        = dados[i].name;
+    const description = dados[i].description;
+    const price       = dados[i].price;
+    const image       = dados[i].image;
     
     html += `
     <div class="produto">
-      <div class="produto-header">>
+      <div class="produto-header">
             <img src="${image}" alt="">
       </div>
         
-        <div class="produto-main">>
+        <div class="produto-main">
             <p>${name}</p>
-            <span>${price}</span>
+            <span>${description}</span>
+            <p>R$ ${price}</p>
         </div>
   
         <button onClick="addToItems(${id_product})">+</button>
@@ -114,7 +143,7 @@ async function addToItems(id_product) {
   
 
   const resultado = await res.json();
-  alert(resultado.message);
+  console.log(resultado.message);
 }
 
 async function login() {

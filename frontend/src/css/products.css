@@ -2,14 +2,14 @@
     display:flex; 
     gap: 30px;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 .produto {
     border: 1px solid #333;
     padding: 10px;
     border-radius: 5px;
-    width: 100px;
+    width: 200px;
     background-color: white;
 }
 
@@ -20,4 +20,25 @@
     padding: 5px 10px;
     border-radius: 5px;
     margin-top: 10px;
+}
+
+.produto-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.produto-header img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.produto-main p{
+    font-weight: bold;
+}
+
+.produto-main span{
+    font-weight: normal;
 }

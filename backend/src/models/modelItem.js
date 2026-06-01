@@ -41,7 +41,8 @@ async function findItemsByPurchase(id_purchase) {
     SELECT i.*, p.name, p.price AS original_price, p.image 
     FROM items i 
     JOIN products p ON i.id_product = p.id 
-    WHERE i.id_purchase = 10`;
+    WHERE i.id_purchase = ?
+    `;
     const [result] = await db.query(query, [id_purchase]);
     return result;
 }
