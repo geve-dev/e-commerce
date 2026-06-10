@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`users` (
   `role` ENUM('user', 'mod', 'adm') NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -48,6 +48,30 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`purchase` (
     FOREIGN KEY (`id_user`)
     REFERENCES `ecommerce`.`users` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`stores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`stores` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_owner` INT NOT NULL,
+  `name` VARCHAR(120) NOT NULL,
+  `slug` VARCHAR(120) NOT NULL,
+  `niche` VARCHAR(60) NULL DEFAULT NULL,
+  `status` ENUM('pending', 'active', 'rejected') NOT NULL DEFAULT 'pending',
+  `admin_notes` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `slug` (`slug` ASC) VISIBLE,
+  INDEX `id_owner` (`id_owner` ASC) VISIBLE,
+  CONSTRAINT `stores_ibfk_1`
+    FOREIGN KEY (`id_owner`)
+    REFERENCES `ecommerce`.`users` (`id`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -58,14 +82,20 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ecommerce`.`products` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(120) NULL DEFAULT NULL,
-  `description` VARCHAR(255) NULL DEFAULT NULL,
-  `price` DECIMAL(10,2) NULL DEFAULT NULL,
-  `stock` INT NULL DEFAULT NULL,
-  `image` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
+  `id_store` INT NOT NULL,
+  `name` VARCHAR(120) NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `stock` INT NOT NULL,
+  `image` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_products_stores_idx` (`id_store` ASC) VISIBLE,
+  CONSTRAINT `fk_products_stores`
+    FOREIGN KEY (`id_store`)
+    REFERENCES `ecommerce`.`stores` (`id`)
+    ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 19
+AUTO_INCREMENT = 20
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

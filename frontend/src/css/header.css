@@ -28,7 +28,8 @@ header {
 }
 
 /* login */
-#logar, #deslogar {
+#logar,
+#deslogar {
     background-color: grey;
     color: white;
     border: none;
@@ -40,7 +41,8 @@ header {
     transition: all 0.3s ease;
 }
     
-#logar:hover, #deslogar:hover {
+#logar:hover,
+#deslogar:hover {
     background-color: #666;
     box-shadow: 0 1px 20px rgba(0, 0, 0, 0.8);
     transition: all 0.3s ease;

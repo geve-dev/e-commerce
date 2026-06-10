@@ -30,4 +30,13 @@ async function getAllStore(req, res, next) {
   }
 };
 
-module.exports = { postStore, getAllStore };
+async function getStorePending(req, res, next) {
+  try {
+    const pendingStores = await repo.getStorePending();
+    return res.status(200).json(pendingStores);
+  } catch (e) {
+    next(e);
+  }
+}
+
+module.exports = { postStore, getAllStore, getStorePending };

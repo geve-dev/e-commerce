@@ -13,25 +13,25 @@ async function postStore (id_ownerOrObj, name, slug, niche) {
 
 async function getAllStore() {
   const query = `SELECT * FROM stores`;
-  const stores = await db.query(query);
+  const [stores] = await db.query(query);
   return stores;
 };
 
 async function getStoreById(id) {
   const query = `SELECT * FROM stores WHERE id = ?`;
-  const store = await db.query(query, [id]);
+  const [store] = await db.query(query, [id]);
   return store;
 };
 
 async function getStorePending() {
   const query = `SELECT * FROM stores WHERE status = 'pending'`;
-  const stores = await db.query(query);
+  const [stores] = await db.query(query);
   return stores;
 };
 
-async function findStoreBySlug(slug) {
+async function findStoreBySlug(slug) {  
   const query = `SELECT * FROM stores WHERE slug = ?`;
-  const store = await db.query(query, [slug]);
+  const [store] = await db.query(query, [slug]);
   return store;
 };
 
