@@ -43,6 +43,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .carrinho .name {
@@ -61,6 +63,8 @@
 .carrinho .acoes {
     display: flex;
     justify-content: center;
+    align-items: center;
+    align-self: center;
 }
 
 .carrinho .quantity {
