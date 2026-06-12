@@ -1,94 +1,179 @@
-.overlay2 {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
-}
-
-.overlay2.active {
-    display: block;
-}
-
 .carrinho {
-    width: 98%;
-    height: 100%;
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    transform: translate(-100%, -50%);
-    background-color: grey;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.carrinho-header {
-    width: 80%;
-    height: 80px;
-    margin: 0 auto;
-    border-radius: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 30px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-    margin-bottom: 30px;
-    margin-top: 30px;
-    background-color: white;
-}
-
-.carrinho-header svg {
-    width: 30px;
-    height: auto;
-}
-
-.carrinho-header button {
-    border: 1px solid black;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background: none;
-    cursor: pointer;
+    width: min(1080px, calc(100% - 32px));
+    min-height: calc(100vh - 130px);
+    margin: 105px auto 32px;
+    padding: 28px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
 }
 
 #carrinhoItems {
-    width: 80%;
-    margin: 0 auto;
-}
-.card {
+    width: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.carrinho .card {
+    display: grid;
+    grid-template-columns: 88px minmax(160px, 1fr) auto 120px;
     align-items: center;
-    justify-content: space-between;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 10px 20px;
-    background-color: white;
-    margin-bottom: 10px;
+    gap: 18px;
+    width: 100%;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
-.card img {
-    width: 50px;
-    height: auto;
+.carrinho .card img {
+    width: 88px;
+    height: 88px;
     object-fit: cover;
+    border-radius: 6px;
+    background: #e8e8e8;
+    display: block;
+    align-self: center;
 }
 
+.carrinho .infos-prod {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-.card .acoes .delete {
-    border: 1px solid black;
-    padding: 5px 5px;
-    border-radius: 5px;
-    background: none;
+.carrinho .name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f1f1f;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+}
+
+.carrinho .price {
+    font-size: 14px;
+    color: #666666;
+}
+
+.carrinho .acoes {
+    display: flex;
+    justify-content: center;
+}
+
+.carrinho .quantity {
+    display: inline-grid;
+    grid-template-columns: 36px 44px 36px;
+    align-items: center;
+    height: 36px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.carrinho .quantity button {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    background: #eeeeee;
+    color: #222222;
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
-    margin-left: 15px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.empty-cart{
+.carrinho .quantity button:hover {
+    background: #222222;
+    color: #ffffff;
+}
+
+.carrinho .quantity-display {
     text-align: center;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+    color: #222222;
+}
+
+.carrinho .card > span:last-child {
+    justify-self: end;
+    min-width: 96px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #111111;
+    text-align: right;
+    align-self: center;
+}
+
+.empty-cart {
+    width: min(520px, 100%);
+    margin: 40px auto;
+    padding: 36px 28px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.empty-cart p {
+    margin: 0 0 12px;
+    color: #333333;
+    font-size: 17px;
+}
+
+.empty-cart p:first-child {
+    font-size: 22px;
+    font-weight: 800;
+    color: #151515;
+}
+
+.empty-cart button {
+    margin-top: 12px;
+    padding: 11px 18px;
+    border: 0;
+    border-radius: 6px;
+    background: #222222;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.empty-cart button:hover {
+    background: #555555;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 720px) {
+    .carrinho {
+        width: calc(100% - 20px);
+        margin-top: 92px;
+        padding: 14px;
+    }
+
+    .carrinho .card {
+        grid-template-columns: 72px 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .carrinho .card img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .carrinho .acoes {
+        grid-column: 1 / 2;
+        justify-content: flex-start;
+    }
+
+    .carrinho .card > span:last-child {
+        grid-column: 2 / 3;
+        justify-self: end;
+        align-self: center;
+    }
 }
