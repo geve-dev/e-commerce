@@ -34,8 +34,22 @@ async function login() {
     } else {
       const loginError = document.querySelector('.login-error');
       loginError.innerHTML = `Não foi possível fazer login. Verifique suas credenciais.`;
-      return;
-    }
+
+          // marcar inputs como inválidos
+          const emailInput = document.getElementById('email');
+          const senhaInput = document.getElementById('senha');
+          if (emailInput) emailInput.classList.add('input-error');
+          if (senhaInput) senhaInput.classList.add('input-error');
+
+          // remover classe de erro ao digitar
+          [emailInput, senhaInput].forEach((el) => {
+            if (!el) return;
+            const handler = () => el.classList.remove('input-error');
+            el.addEventListener('input', handler, { once: true });
+          });
+
+          return;
+        }
   } catch (error) {
     console.error("Erro na requisição de login:", error);
     alert("Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.");
