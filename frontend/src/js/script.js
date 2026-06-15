@@ -15,6 +15,10 @@ async function renderPerfil() {
       return;
   }
 
+  if (window.location.pathname.endsWith("/cart.html")) {
+      return;
+  }
+
   if (getStatus()) {
     btns.innerHTML = `
       <button id="carrinho">🛒</button>
@@ -264,12 +268,16 @@ function handleHeaderClick(event) {
         logout();
     }
     if (event.target.id === "carrinho") {
-        popup2.classList.add("active");
+        if (popup2) {
+            popup2.classList.add("active");
+        }
     }
 }
 
 function handleFecharCarrinhoClick() {
-    popup2.classList.remove("active");
+    if (popup2) {
+        popup2.classList.remove("active");
+    }
 }
 
 

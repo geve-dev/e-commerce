@@ -70,7 +70,7 @@ async function removeItemQuantity(req, res, next) {
         }
 
         if (quantity > item.quantity) {
-            await repo.removeItemQuantity(purchase.id, id_product);
+            await repo.deleteItem(purchase.id, id_product);
             return res.status(200).json({ message: "Item removido do carrinho" });
         }
 

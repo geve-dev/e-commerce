@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3003';
+
 function getStatus() {
     const token = localStorage.getItem('token');
     return !!token;
@@ -9,11 +11,40 @@ async function login() {
     console.error("Formulário de login 'fl' não encontrado.");
     return;
   }
+
+  const emailInput = document.getElementById('email');
+  const senhaInput = document.getElementById('senha');
+  const loginError = document.querySelector('.login-error');
+
+  const email = emailInput ? emailInput.value.trim() : '';
+  const senha = senhaInput ? senhaInput.value.trim() : '';
+
+  // limpar erros anteriores
+  if (loginError) loginError.innerHTML = '';
+  if (emailInput) emailInput.classList.remove('input-error');
+  if (senhaInput) senhaInput.classList.remove('input-error');
+
+  // validação simples: campos obrigatórios
+  const invalidInputs = [];
+  if (!email) invalidInputs.push(emailInput);
+  if (!senha) invalidInputs.push(senhaInput);
+
+  if (invalidInputs.length > 0) {
+    if (loginError) loginError.innerHTML = 'Preencha todos os campos.';
+    invalidInputs.forEach((el) => {
+      if (!el) return;
+      el.classList.add('input-error');
+      const handler = () => el.classList.remove('input-error');
+      el.addEventListener('input', handler, { once: true });
+    });
+    return;
+  }
+
   const dados = new FormData(form);
   const valores = Object.fromEntries(dados.entries());
 
   try {
-    const res = await fetch(`http://localhost:3003/auth/login`, {
+    const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(valores),
@@ -32,24 +63,21 @@ async function login() {
         window.location.href = 'index.html'; // Redireciona para a página principal para usuários comuns
       }
     } else {
-      const loginError = document.querySelector('.login-error');
-      loginError.innerHTML = `Não foi possível fazer login. Verifique suas credenciais.`;
+      if (loginError) loginError.innerHTML = `Não foi possível fazer login. Verifique suas credenciais.`;
 
-          // marcar inputs como inválidos
-          const emailInput = document.getElementById('email');
-          const senhaInput = document.getElementById('senha');
-          if (emailInput) emailInput.classList.add('input-error');
-          if (senhaInput) senhaInput.classList.add('input-error');
+      // marcar inputs como inválidos
+      if (emailInput) emailInput.classList.add('input-error');
+      if (senhaInput) senhaInput.classList.add('input-error');
 
-          // remover classe de erro ao digitar
-          [emailInput, senhaInput].forEach((el) => {
-            if (!el) return;
-            const handler = () => el.classList.remove('input-error');
-            el.addEventListener('input', handler, { once: true });
-          });
+      // remover classe de erro ao digitar
+      [emailInput, senhaInput].forEach((el) => {
+        if (!el) return;
+        const handler = () => el.classList.remove('input-error');
+        el.addEventListener('input', handler, { once: true });
+      });
 
-          return;
-        }
+      return;
+    }
   } catch (error) {
     console.error("Erro na requisição de login:", error);
     alert("Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.");

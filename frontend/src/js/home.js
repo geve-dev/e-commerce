@@ -1,147 +1,212 @@
-// Funções utilitárias de estado de login
+const API_URL = 'http://localhost:3003';
+
+const needLoginPopup = document.getElementById('needLoginPopup');
+const closeNeedLoginPopup = document.getElementById('closeNeedLoginPopup');
+
+if (closeNeedLoginPopup) {
+  closeNeedLoginPopup.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (needLoginPopup) needLoginPopup.classList.remove('active');
+  });
+}
+
+if (needLoginPopup) {
+  needLoginPopup.addEventListener('click', (e) => {
+    if (e.target === needLoginPopup) {
+      needLoginPopup.classList.remove('active');
+    }
+  });
+}
+
 function getStatus() {
-    const token = localStorage.getItem('token');
-    return !!token;
+  return !!localStorage.getItem('token');
+}
+
+function getAuthHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  };
 }
 
 async function getStoresProducts() {
   try {
-    const res = await fetch(`http://localhost:3003/store/products`, {
-      method: 'GET',
-    });
+    const res = await fetch(`${API_URL}/store/products`);
 
     if (!res.ok) {
-      throw new Error(`Erro ao buscar produtos: ${res.statusText}`);
+      throw new Error(`Erro ao buscar produtos: ${res.status}`);
     }
-    
+
     const data = await res.json();
+
     console.log(data);
-    renderProducts(data);    
+    renderProducts(data);
   } catch (error) {
-    console.error("Erro ao buscar lojas:", error);
+    console.error('Erro ao buscar produtos:', error);
+    const produtos = document.querySelector('.home-main');
+    if (produtos) {
+      produtos.innerHTML = `
+        <div class="dot-spinner">
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+        </div>
+      `;
+    }
   }
 }
 
-async function renderProducts(dados) {
-  const produtos = document.querySelector(".home-main");
+function renderProducts(dados) {
+  const produtos = document.querySelector('.home-main');
   if (!produtos) {
-      console.warn("Elemento '.produtos-section' não encontrado. Não é possível renderizar os produtos.");
-      return;
+    return;
   }
-  let html = "";
 
   if (!dados || dados.length === 0) {
-      produtos.innerHTML = "<p>Nenhum produto encontrado.</p>";
-      return;
-  }
-
-  for (let i = 0; i < dados.length; i++){
-    const id_product  = dados[i].id;
-    const name        = dados[i].name;
-    const price = dados[i].price;
-    const image = dados[i].image;
-
-    html += `
-    <div class="produto">
-        <div class="produto-header">
-            <img src="${image}" alt="${name}">
-        </div>
-
-        <div class="produto-main">
-            <p>Nova Coleção</p>
-            <span>${name}</span>
-            <p>R$ ${price}</p>
-        </div>
-
-        <button onClick="addToItems(${id_product})">
-            <i class="fa-solid fa-plus"></i>
-        </button>
-    </div>
+    produtos.innerHTML = `
+      <div class="dot-spinner">
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+      </div>
     `;
+    return;
   }
-  produtos.innerHTML = html;
+
+  produtos.innerHTML = dados.map((produto) => `
+    <div class="produto">
+      <div class="produto-header">
+        <img src="${produto.image}" alt="${produto.name}">
+      </div>
+
+      <div class="produto-main">
+        <p>Nova Colecao</p>
+        <span>${produto.name}</span>
+        <p>R$ ${produto.price}</p>
+      </div>
+
+      <button type="button" onclick="addToItems(${produto.id})">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  `).join('');
 }
 
-// Funções para renderizar o perfil e lidar com o logout
-async function renderPerfil() {
-  const btns = document.querySelector(".btns");
-  if (!btns) {
-      console.warn("Elemento '.btns' não encontrado. Não é possível renderizar o perfil.");
+async function addToItems(id_product) {
+  if (!getStatus()) {
+    needLoginPopup.classList.add('active');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/item`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ id_product, quantity: 1 }),
+    });
+
+    if (res.status === 401) {
+      logout();
+      window.location.href = 'login.html';
       return;
+    }
+
+    if (!res.ok) {
+      throw new Error(`Falha ao adicionar item ao carrinho: ${res.status}`);
+    }
+
+    renderPerfil()
+    
+  } catch (error) {
+    console.error('Erro ao adicionar item:', error);
+    alert('Ocorreu um erro ao adicionar o item. Tente novamente.');
+  }
+}
+
+async function renderPerfil() {
+  const btns = document.querySelector('.btns');
+  if (!btns) {
+    return;
   }
 
   if (getStatus()) {
     btns.innerHTML = `
-      <button id="carrinho">🛒</button>
-      <button id="deslogar">Logout</button>
+      <button id="carrinho" type="button" aria-label="Carrinho">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span id="badge-carrinho" class="badge" style="display: inline-block;">${await getCartCount()}</span>
+      </button>
+      <button id="deslogar" type="button">Logout</button>
     `;
   } else {
     btns.innerHTML = `
-      <button id="carrinho">🛒</button>
-      <button id="logar" onClick="window.location.href='login.html'">Login</button>
+      <button id="carrinho" type="button" aria-label="Carrinho">
+      <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+      <button id="logar" type="button">Login</button>
     `;
   }
-  // Após a renderização, re-anexar os event listeners
-  attachHeaderEventListeners();
 }
 
-async function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("userName");
-  localStorage.removeItem("role");
+async function getCartCount() {
+  try {
+    const res = await fetch(`${API_URL}/item`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+    
+    const data = await res.json();
 
-  // O formulário "fl" só existe na página de login, então verificamos antes de usar.
-  const form = document.getElementById("fl");
-  if (form) {
-      form.reset();
+    const allQuantities = data.items.reduce((acc, item) => acc + item.quantity, 0);
+    
+    return allQuantities;
+  } catch (error) {
+    console.error('Erro ao obter contagem do carrinho:', error);
+    return 0;
   }
-
-  await renderPerfil(); // Atualiza a UI para mostrar "Login"
-  // Opcional: Recarregar a página ou limpar o carrinho na UI
-  // window.location.reload();
-  renderPurchase([]); // Limpa o carrinho exibido na UI
 }
 
-// Event Listeners
-function attachHeaderEventListeners() {
-    const header = document.querySelector("header");
-    if (!header) {
-        console.warn("Elemento 'header' não encontrado. Event listeners de header não serão anexados.");
-        return;
-    }
-
-    // Remove listeners existentes para evitar duplicação após renderPerfil
-    header.removeEventListener("click", handleHeaderClick);
-    header.addEventListener("click", handleHeaderClick);
-
-    // Event listener para fechar o carrinho
-    if (fecharCarrinho) {
-        fecharCarrinho.removeEventListener("click", handleFecharCarrinhoClick);
-        fecharCarrinho.addEventListener("click", handleFecharCarrinhoClick);
-    }
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userName');
+  localStorage.removeItem('role');
+  renderPerfil();
 }
 
 function handleHeaderClick(event) {
-    if (event.target.id === "logar") { // Mudança para corresponder ao ID no renderPerfil
-        window.location.href = "login.html";
-    }
-    if (event.target.id === "deslogar") {
-        logout();
-    }
-    if (event.target.id === "carrinho") {
-        popup2.classList.add("active");
-    }
+  const button = event.target.closest('button');
+  if (!button) {
+    return;
+  }
+
+  if (button.id === 'logar') {
+    window.location.href = 'login.html';
+  }
+
+  if (button.id === 'deslogar') {
+    logout();
+  }
+
+  if (button.id === 'carrinho') {
+    window.location.href = 'cart.html';
+  }
 }
 
-function handleFecharCarrinhoClick() {
-    popup2.classList.remove("active");
-}
+document.addEventListener('DOMContentLoaded', () => {
+  getStoresProducts();
+  renderPerfil();
 
-
-// Inicialização
-document.addEventListener("DOMContentLoaded", () => {
-    getStoresProducts();
-    // getPurchase();
-    renderPerfil();
-    attachHeaderEventListeners(); // Anexa os listeners inicialmente
+  const header = document.querySelector('header');
+  if (header) {
+    header.addEventListener('click', handleHeaderClick);
+  }
 });
