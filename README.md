@@ -1,4 +1,4 @@
-# e-comerce
+# e-commerce
 
 Aplicação de exemplo de e-commerce com backend em Node.js/Express e frontend estático (HTML/CSS/JS). A API usa MySQL para persistência e autenticação via JWT.
 
