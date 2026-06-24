@@ -1,4 +1,4 @@
-# e-comerce
+# e-commerce
 
 Aplicação de exemplo de e-commerce com backend em Node.js/Express e frontend estático (HTML/CSS/JS). A API usa MySQL para persistência e autenticação via JWT.
 
@@ -167,7 +167,7 @@ Licença: ISC (ver `backend/package.json`).
 
 ## Autor
 
-Geve — https://github.com/geve-dev/e-comerce
+Geve — https://github.com/geve-dev/e-commerce
 
 
 --
