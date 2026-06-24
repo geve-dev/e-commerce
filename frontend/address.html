@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <title>Endereço</title>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="logo">E-Commerce</h1>
+
+        <div class="btns">
+            <button onClick="window.location.href='index.html'">Voltar →</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="address-form-section">
+            <h2>Meu Endereço</h2>
+            <form id="fa" class="address-form">
+                <div class="form-group">
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" required>
+                    <button type="button" id="searchCepBtn" onclick="searchCep()">Buscar CEP</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="street">Rua:</label>
+                    <input type="text" id="street" name="street" placeholder="Nome da Rua" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="number">Número:</label>
+                    <input type="text" id="number" name="number" placeholder="Número" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="complement">Complemento:</label>
+                    <input type="text" id="complement" name="complement" placeholder="Apto, Bloco, etc. (Opcional)">
+                </div>
+
+                <div class="form-group">
+                    <label for="neighborhood">Bairro:</label>
+                    <input type="text" id="neighborhood" name="neighborhood" placeholder="Bairro" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Cidade:</label>
+                    <input type="text" id="city" name="city" placeholder="Cidade" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">Estado:</label>
+                    <input type="text" id="state" name="state" placeholder="Estado (Ex: SP)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="full_name">Nome Completo:</label>
+                    <input type="text" id="full_name" name="full_name" placeholder="Nome Completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone_number">Telefone:</label>
+                    <input type="text" id="phone_number" name="phone_number" placeholder="Telefone" required>
+                </div>
+
+                <button type="button" class="btn-save-address" onclick="postAddress()">Salvar Endereço</button>
+            </form>
+
+            <div id="message" class="message"></div>
+        </section>
+
+        <!-- Se desejar adicionar a funcionalidade de mapa no futuro, pode ser aqui -->
+         <!--<section class="map-section">
+            <h2>Ou encontre no mapa</h2>
+            <div id="map-container" style="height: 400px; width: 100%; background-color: #eee;">
+                Mapa viria aqui
+            </div>
+            <button type="button" id="selectAddressFromMapBtn">Confirmar Endereço do Mapa</button>
+        </section> -->
+    </main>
+
+
+    <script src="src/js/address.js"></script>
+</body>
+</html>
