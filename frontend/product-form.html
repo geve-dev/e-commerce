@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <title>Adicionar Produto</title>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="logo">E-Commerce</h1>
+        <div class="btns">
+            <button onClick="window.location.href='my-stores.html'">Voltar <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </header>
+
+    <main class="product-form-page">
+        <section class="store-form-section">
+            <h2>Adicionar Produto</h2>
+            <p class="form-lead">Preencha os dados abaixo para adicionar um produto.</p>
+
+            <form id="product-form" class="store-form" novalidate>
+
+                <p class="form-section-title">Imagens do Produto</p>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label>Carregar Imagem</label>
+                        <div class="image-upload-wrapper">
+                            <div class="image-upload-area" id="image-area">
+                                <i class="fa-solid fa-image" data-upload-icon="image-input"></i>
+                                <span class="upload-text" data-upload-icon="image-input">
+                                    Clique para <strong>selecionar a imagem do produto</strong>
+                                </span>
+                                <img id="image-preview" class="image-preview" style="display:none" alt="Preview image">
+                                <button type="button" id="clear-image" class="clear-image-btn" style="display:none">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                                <input type="file" id="image-input" accept="image/*">
+                            </div>
+                            <span class="image-preview-label">URL da imagem do produto <span class="optional">(opcional)</span></span>
+                            <div class="image-url-row">
+                                <input type="text" id="image" name="image" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label>Banner</label>
+                        <div class="image-upload-wrapper">
+                            <div class="image-upload-area" id="banner-area">
+                                <i class="fa-solid fa-image" data-upload-icon="banner-input"></i>
+                                <span class="upload-text" data-upload-icon="banner-input">
+                                    Clique para <strong>selecionar banner</strong>
+                                </span>
+                                <img id="banner-preview" class="image-preview" style="display:none" alt="Preview banner">
+                                <button type="button" id="clear-banner" class="clear-image-btn" style="display:none">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                                <input type="file" id="banner-input" accept="image/*">
+                            </div>
+                            <span class="image-preview-label">URL do banner <span class="optional">(opcional)</span></span>
+                            <div class="image-url-row">
+                                <input type="text" id="banner_url" name="banner_url" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+
+                <p class="form-section-title">Informações do produto</p>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="name">Nome do produto</label>
+                        <input type="text" id="name" name="name" placeholder="Ex: Calça Jeans" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="slug">Slug</label>
+                        <input type="text" id="slug" name="slug" placeholder="calca-jeans" required>
+                        <div class="slug-preview">URL: /product/<span id="slug-preview-value">...</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Categoria</label>
+                        <select id="category" name="category" required>
+                            <option value="">Selecione...</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Moda e Acessórios">Moda e Acessórios</option>
+                            <option value="Casa e Decoração">Casa e Decoração</option>
+                            <option value="Beleza e Cuidados">Beleza e Cuidados</option>
+                            <option value="Esportes e Lazer">Esportes e Lazer</option>
+                            <option value="Alimentos e Bebidas">Alimentos e Bebidas</option>
+                            <option value="Livros e Papelaria">Livros e Papelaria</option>
+                            <option value="Brinquedos e Jogos">Brinquedos e Jogos</option>
+                            <option value="Saúde e Bem-Estar">Saúde e Bem-Estar</option>
+                            <option value="Automotivo">Automotivo</option>
+                            <option value="Tecnologia">Tecnologia</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Preço</label>
+                        <input type="text" id="price" name="price" placeholder="R$ " required>
+                    </div>
+                    <div class="form-group span-2">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" name="description" placeholder="Conte um pouco sobre sua loja..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="stock">Estoque</label>
+                        <input type="text" id="stock" name="stock" placeholder="Quantidade em estoque" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" required>
+                            <option value="">Selecione</option>
+                            <option value="1">Ativo</option>
+                            <option value="0">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="my-stores.html" class="btn-cancel-product"><i class="fa-solid fa-times"></i> Cancelar</a>
+                    <button type="submit" class="btn-create-product"><i class="fa-solid fa-check"></i> Adicionar Produto</button>
+                </div>
+            </form>
+
+            <div id="form-message" class="message"></div>
+        </section>
+    </main>
+
+    <script src="src/js/product-form.js"></script>
+</body>
+</html>
