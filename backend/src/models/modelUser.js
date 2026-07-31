@@ -24,9 +24,27 @@ async function getUserById(id) {
     return rows[0];
 }
 
-async function updateUser(id, name, email, password, role) {
-    const query = `UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?`
-    const [result] = await db.query(query, [name, email, password, role, id]);
+async function getProfileById(id) {
+    const query = `SELECT id, name, email, role FROM users WHERE id = ?`
+    const [rows] = await db.query(query, [id]);
+    return rows[0];
+}
+
+async function updateUser(id, fields) {
+    // fields é um objeto com qualquer combinação de: name, email, password, role
+    const allowed = ['name', 'email', 'password', 'role'];
+    const keys = Object.keys(fields).filter(k => allowed.includes(k));
+
+    if (keys.length === 0) {
+        return { affectedRows: 0 };
+    }
+
+    const setClause = keys.map(k => `${k} = ?`).join(', ');
+    const values = keys.map(k => fields[k]);
+    values.push(id);
+
+    const query = `UPDATE users SET ${setClause} WHERE id = ?`;
+    const [result] = await db.query(query, values);
     return result;
 }
 
@@ -36,4 +54,4 @@ async function deleteUser(id) {
     return result;
 }
 
-module.exports = { findUserByEmail, createUser, getAllUsers, getUserById, updateUser, deleteUser }
+module.exports = { findUserByEmail, createUser, getAllUsers, getUserById, updateUser, deleteUser, getProfileById }

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 function authRequired(req, res, next) {
-    const auth = req.headers.authorization;
+  const auth = req.headers.authorization;
     if (!auth) return res.status(401).json({ message: "Token ausente" });
 
     const token = auth.split(' ')[1];
