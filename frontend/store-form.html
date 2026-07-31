@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <title>Criar Loja</title>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="logo">E-Commerce</h1>
+        <div class="btns">
+            <button onClick="window.location.href='my-stores.html'">Voltar <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </header>
+
+    <main class="store-form-page">
+        <section class="store-form-section">
+            <h2>Criar nova loja</h2>
+            <p class="form-lead">Preencha os dados abaixo para criar sua loja.</p>
+
+            <form id="store-form" class="store-form" novalidate>
+
+                <p class="form-section-title">Imagens da loja</p>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label>Logo</label>
+                        <div class="image-upload-wrapper">
+                            <div class="image-upload-area" id="logo-area">
+                                <i class="fa-solid fa-image" data-upload-icon="logo-input"></i>
+                                <span class="upload-text" data-upload-icon="logo-input">
+                                    Clique para <strong>selecionar logo</strong>
+                                </span>
+                                <img id="logo-preview" class="image-preview" style="display:none" alt="Preview logo">
+                                <button type="button" id="clear-logo" class="clear-image-btn" style="display:none">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                                <input type="file" id="logo-input" accept="image/*">
+                            </div>
+                            <span class="image-preview-label">URL da logo <span class="optional">(opcional)</span></span>
+                            <div class="image-url-row">
+                                <input type="text" id="logo_url" name="logo_url" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Banner</label>
+                        <div class="image-upload-wrapper">
+                            <div class="image-upload-area" id="banner-area">
+                                <i class="fa-solid fa-image" data-upload-icon="banner-input"></i>
+                                <span class="upload-text" data-upload-icon="banner-input">
+                                    Clique para <strong>selecionar banner</strong>
+                                </span>
+                                <img id="banner-preview" class="image-preview" style="display:none" alt="Preview banner">
+                                <button type="button" id="clear-banner" class="clear-image-btn" style="display:none">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                                <input type="file" id="banner-input" accept="image/*">
+                            </div>
+                            <span class="image-preview-label">URL do banner <span class="optional">(opcional)</span></span>
+                            <div class="image-url-row">
+                                <input type="text" id="banner_url" name="banner_url" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="form-section-title">Informações da loja</p>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="store_name">Nome da loja</label>
+                        <input type="text" id="store_name" name="store_name" placeholder="Ex: Tech Mania" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="slug">Slug</label>
+                        <input type="text" id="slug" name="slug" placeholder="tech-mania" required>
+                        <div class="slug-preview">URL: /store/<span id="slug-preview-value">...</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="niche">Nicho</label>
+                        <select id="niche" name="niche" required>
+                            <option value="">Selecione...</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Moda e Acessórios">Moda e Acessórios</option>
+                            <option value="Casa e Decoração">Casa e Decoração</option>
+                            <option value="Beleza e Cuidados">Beleza e Cuidados</option>
+                            <option value="Esportes e Lazer">Esportes e Lazer</option>
+                            <option value="Alimentos e Bebidas">Alimentos e Bebidas</option>
+                            <option value="Livros e Papelaria">Livros e Papelaria</option>
+                            <option value="Brinquedos e Jogos">Brinquedos e Jogos</option>
+                            <option value="Saúde e Bem-Estar">Saúde e Bem-Estar</option>
+                            <option value="Automotivo">Automotivo</option>
+                            <option value="Tecnologia">Tecnologia</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ</label>
+                        <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required>
+                    </div>
+                    <div class="form-group span-2">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" name="description" placeholder="Conte um pouco sobre sua loja..." required></textarea>
+                    </div>
+                </div>
+
+                <p class="form-section-title">Contato</p>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="contact_email">Email de contato</label>
+                        <input type="email" id="contact_email" name="contact_email" placeholder="contato@loja.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_phone">Telefone</label>
+                        <input type="tel" id="contact_phone" name="contact_phone" placeholder="(11) 99999-8888" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="my-stores.html" class="btn-cancel-store"><i class="fa-solid fa-times"></i> Cancelar</a>
+                    <button type="submit" class="btn-save-store"><i class="fa-solid fa-check"></i> Criar Loja</button>
+                </div>
+            </form>
+
+            <div id="form-message" class="message"></div>
+        </section>
+    </main>
+
+    <script src="src/js/store-form.js"></script>
+</body>
+</html>
