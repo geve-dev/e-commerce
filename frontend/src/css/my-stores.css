@@ -1,0 +1,269 @@
+.my-stores-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 20px 40px;
+}
+
+.my-stores-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.my-stores-header h1 {
+  color: #e0e0e0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-create-store {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #111;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-create-store:hover {
+  background: #e8e8e8;
+  transform: translateY(-1px);
+}
+
+/* Empty state */
+.my-stores-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 64px 24px;
+  background: #1c1f26;
+  border-radius: 16px;
+  border: 1px solid #2d323d;
+}
+
+.my-stores-empty i {
+  font-size: 3rem;
+  color: #4a5568;
+  margin-bottom: 16px;
+}
+
+.my-stores-empty p {
+  color: #a0aec0;
+  font-size: 1.1rem;
+  margin: 0 0 24px;
+}
+
+.my-stores-empty .btn-create-store {
+  display: inline-flex;
+}
+
+/* Grid */
+.my-stores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* Card */
+.my-store-card {
+  background: #1c1f26;
+  border: 1px solid #2d323d;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.my-store-card:hover {
+  border-color: #4a5568;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.my-store-banner {
+  height: 100px;
+  background: #242933;
+  position: relative;
+  overflow: hidden;
+}
+
+.my-store-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.my-store-banner .banner-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2d323d 0%, #1c1f26 100%);
+}
+
+.my-store-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: #343a46;
+  border: 3px solid #1c1f26;
+  margin-top: -32px;
+  margin-left: 20px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.my-store-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-store-logo .logo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #a0aec0;
+  background: #343a46;
+}
+
+.my-store-body {
+  padding: 16px 20px 20px;
+}
+
+.my-store-body .st-title {
+  font-size: 1.2rem;
+  margin: 0 0 6px;
+}
+
+.my-store-body .st-badge {
+  display: inline-block;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
+.my-store-body .status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.approved,
+.status-badge.active {
+  background: rgba(72, 187, 120, 0.15);
+  color: #68d391;
+  border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+.status-badge.pending {
+  background: rgba(236, 201, 75, 0.15);
+  color: #ecc94b;
+  border: 1px solid rgba(236, 201, 75, 0.3);
+}
+
+.status-badge.rejected {
+  background: rgba(245, 101, 101, 0.15);
+  color: #fc8181;
+  border: 1px solid rgba(245, 101, 101, 0.3);
+}
+
+.my-store-description {
+  color: #a0aec0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 12px 0 0;
+}
+
+.my-store-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #2d323d;
+}
+
+.my-store-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #718096;
+  font-size: 0.8rem;
+}
+
+.my-store-meta-item i {
+  font-size: 0.85rem;
+  width: 14px;
+  text-align: center;
+}
+
+.my-store-actions {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #2d323d;
+  display: flex;
+  gap: 8px;
+}
+
+.my-store-actions .btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+  border: none;
+}
+
+.my-store-actions .btn-primary {
+  background: #fff;
+  color: #111;
+}
+
+.my-store-actions .btn-primary:hover {
+  background: #e8e8e8;
+  transform: translateY(-1px);
+}
+
+.my-store-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.my-store-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 600px) {
+  .my-stores-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-store-actions {
+    flex-direction: column;
+  }
+}
