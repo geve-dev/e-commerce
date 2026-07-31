@@ -26,12 +26,56 @@ async function addItemQuantity(id_item, quantity) {
 
 async function AllPrice(id_purchase) {
     const query = `
-      SELECT SUM(quantity * unit_value) AS total_value
-      FROM ecommerce.items
-      WHERE id_purchase = ?;
-`;
-    const [result] = await db.query(query, [quantity, id_item]);
-    return result;
+      SELECT COALESCE(SUM(quantity * unit_value), 0) AS total_value
+      FROM items
+      WHERE id_purchase = ?
+    `;
+    const [rows] = await db.query(query, [id_purchase]);
+    return rows.length > 0 ? rows[0].total_value : 0;
 }
 
-module.exports = { findOpenPurchaseByUserId, createPurchase, findItemByPurchaseAndProduct, addItemQuantity, AllPrice }
+async function getAllPurchases() {
+  const query = `
+    SELECT p.*, u.name AS user_name, u.email AS user_email
+    FROM purchase p
+    JOIN users u ON u.id = p.id_user
+    ORDER BY p.datahora DESC
+  `;
+  const [rows] = await db.query(query);
+  return rows;
+}
+
+async function updatePurchaseStatus(id, status) {
+  const query = `UPDATE purchase SET status = ? WHERE id = ?`;
+  const [result] = await db.query(query, [status, id]);
+  return result;
+}
+
+async function getPurchasesByStore(data) {
+  const query = `
+    SELECT 
+      p.id AS product_id, p.name, p.image, p.price AS product_price,
+      i.quantity, i.unit_value,
+      pu.id AS purchase_id, pu.id_user, pu.datahora, pu.all_price, pu.status,
+      u.name as user_name
+    FROM products p
+    JOIN items i ON p.id = i.id_product
+    JOIN purchase pu ON pu.id = i.id_purchase
+    JOIN stores s ON s.id = p.id_store
+    JOIN users u ON pu.id_user = u.id
+    WHERE pu.status != 'cancelado' AND s.id = ?
+  `;
+  const [rows] = await db.query(query, [data]);
+  return rows;
+}
+
+module.exports = {
+  findOpenPurchaseByUserId,
+  createPurchase,
+  findItemByPurchaseAndProduct,
+  addItemQuantity,
+  AllPrice,
+  getAllPurchases,
+  updatePurchaseStatus,
+  getPurchasesByStore
+}
