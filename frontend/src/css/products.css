@@ -1,6 +1,7 @@
-.produtos-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+.home-main {
+    /*display: grid;*/
+    /*grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));*/
     gap: 40px;
     padding: 40px 5%;
     margin-top: 100px;

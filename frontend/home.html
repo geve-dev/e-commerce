@@ -13,10 +13,11 @@
         <h1 class="logo">E-Commerce</h1>
 
         <div class="btns">  
-            <button id="userProfile" onClick="window.location.href='login.html'"><i class="fas fa-user"></i></button>
+                <!--<button id="carrinho">🛒</button>-->
+            <button onClick="window.location.href='login.html'">Login</button>
         </div>
     </header>
-    
+
     <main>
         <section class="stores-section">
             <div id="stores">
@@ -27,12 +28,10 @@
     <!--pop de aviso que precisa de login para adicionar itens ao carrinho-->
     <div id="needLoginPopup" class="overlay">
         <div class="needLogin">
-            <div class="needLogin-header">
-                <h1>Login Necessário</h1>
-                <i id="closeNeedLoginPopup" class="fas fa-times close-btn"></i>
-            </div>
-            <p>Você precisa estar logado para adicionar itens ao carrinho.</p>
-            <button onClick="window.location.href='login.html'; logout()">Login</button>
+            <h1>Login Necessário</h1>
+            <button id="closeNeedLoginPopup" class="close-btn"><i class="fas fa-times"></i></button>
+            <h2>Você precisa estar logado para adicionar itens ao carrinho.</h2>
+            <button onClick="window.location.href='login.html'">Login</button>
         </div>
     </div>
 

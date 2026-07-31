@@ -15,6 +15,10 @@ async function renderPerfil() {
       return;
   }
 
+  if (window.location.pathname.endsWith("/cart.html")) {
+      return;
+  }
+
   if (getStatus()) {
     btns.innerHTML = `
       <button id="carrinho">🛒</button>
@@ -78,7 +82,7 @@ async function getPurchase() {
 }
 
 async function renderPurchase(items) {
-  const carrinhoItems = document.getElementById("carrinhoItems");
+  const carrinhoItems = document.getElementById('carrinhoItems');
   if (!carrinhoItems) {
       console.warn("Elemento 'carrinhoItems' não encontrado. Não é possível renderizar o carrinho.");
       return;
@@ -87,11 +91,11 @@ async function renderPurchase(items) {
   if (!items || items.length === 0) {
     const isLogged = getStatus();
     carrinhoItems.innerHTML = isLogged
-      ? `<div class="empty-cart">
+      ? `<div class="emptyCart">
             <p>Seu carrinho está vazio.</p>
             <button onClick="window.location.href='index.html'">Continuar comprando</button>
           </div>`
-      : `<div class="empty-cart">
+      : `<div class="emptyCart">
             <p>Seu carrinho está vazio.</p>
             <p>Faça login para salvar seus itens!</p>
             <button onClick="window.location.href='index.html'">Continuar comprando</button>
@@ -184,9 +188,11 @@ async function getProducts() {
   let url = 'http://localhost:3003/product';
   try {
     const res = await fetch(url);
+    
     if (!res.ok) {
         throw new Error('Falha ao obter produtos');
     }
+    
     let response = await res.json();
     renderProducts(response);
   } catch (error) {
@@ -262,12 +268,16 @@ function handleHeaderClick(event) {
         logout();
     }
     if (event.target.id === "carrinho") {
-        popup2.classList.add("active");
+        if (popup2) {
+            popup2.classList.add("active");
+        }
     }
 }
 
 function handleFecharCarrinhoClick() {
-    popup2.classList.remove("active");
+    if (popup2) {
+        popup2.classList.remove("active");
+    }
 }
 
 

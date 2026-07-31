@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="src/css/styles.css">
     <title>Register</title>
 </head>
@@ -12,16 +12,15 @@
     <header class="header">
         <h1 class="logo">E-Commerce</h1>
 
-
         <div class="btns">  
-            <button onClick="window.location.href='index.html'">Voltar →</button>
+            <button onClick="window.location.href='profile.html'">Voltar <i class="fas fa-arrow-right"></i></button>
         </div>
     </header>
     
     <div class="register">
         <div class="register-header">
             <h2>register</h2>
-            <button onClick="window.location.href='index.html'">X</button>
+            <button onClick="window.location.href='index.html'"><i class="fas fa-times"></i></button>
         </div>
 
         <div class="register-main">
@@ -34,8 +33,9 @@
                 <input type="password" id="senha" name="password">
             </form>
 
-            <span>Já tem uma conta? <a href="login.html">Faça login</a></span>
-            
+            <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+            <span class="register-error"></span>
+
             <div class="btn">
                 <button id="btnRegister" onclick="register()">Registrar-se</button>
             </div>

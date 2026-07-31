@@ -24,7 +24,7 @@
 .login-header button {
     background: none;
     border: none;
-    color: #8c8c8c;
+    color: black;
     font-size: 18px;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -32,7 +32,7 @@
 }
 
 .login-header button:hover {
-    color: #000;
+    color: #8c8c8c;
 }
 
 .login-main form{
@@ -48,16 +48,24 @@
     border-radius: 5px;
 }
 
-.login-main span {
-    text-align: center;
-    margin-top: 10px;
+.login-main p {
+    text-align: start;
+    margin-top: 5px;
     font-size: 13px;
     color: #666;
     text-decoration: none;
 }
 
-.login-main span a {
+.login-main p a {
     text-decoration: none;
+}
+
+.login-main .login-error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    bottom: 90px;
 }
 
 .login-main .btn{
@@ -83,4 +91,15 @@
     background-color: #000;
 }
 
+.login-error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
 
+/* Classe aplicada a inputs inválidos */
+.input-error {
+    border-color: #e53935 !important;
+    box-shadow: 0 0 0 3px rgba(229,57,53,0.08) !important;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}

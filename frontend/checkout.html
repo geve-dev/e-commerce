@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <title>Checkout</title>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="logo">E-Commerce</h1>
+
+        <div class="btns">  
+            <button onClick="window.location.href='cart.html'">Voltar <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </header>
+    
+    <div id="paymentMethods">
+        <div id="paymentMethodsHeader">
+            <h2>Formas de Pagamento</h2>
+            <button id="addPaymentMethod"><i class="fas fa-plus"></i></button>
+        </div>
+        
+        <div id="paymentMethodsMain">
+            <div id="paymentMethodSummary">
+                <!--resumo do pedido-->
+            </div>
+            <div id="paymentMethodsList">
+                <button id="creditCard">
+                    <span>Cartão de Crédito</span>
+                </button>
+                <button id="pix">
+                    <span>Pix</span>
+                </button>
+                <button id="boleto">
+                    <span>Boleto</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/js/login.js"></script>
+</body>
+</html>
