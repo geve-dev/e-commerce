@@ -1,0 +1,214 @@
+/* ===== Address form page ===== */
+.addressFormContent {
+  min-height: calc(100vh - 40px);
+  padding: 100px 20px 48px;
+  box-sizing: border-box;
+}
+
+.address-form-section {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.address-form-section > h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-align: center;
+}
+
+.address-form-section .form-lead {
+  margin: -4px 0 4px;
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.address-form-section .address-form {
+  width: 100%;
+  background: linear-gradient(160deg, #242424 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+
+.address-form .form-section-title {
+  margin: 8px 0 14px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.address-form .form-section-title:first-child {
+  margin-top: 0;
+}
+
+.address-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.address-form .two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.address-form .two-cols .form-group {
+  margin-bottom: 14px;
+}
+
+.address-form .two-cols .form-group.span-2 {
+  grid-column: 1 / -1;
+}
+
+.address-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.address-form label .optional {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 12px;
+}
+
+.address-form input[type="text"],
+.address-form input[type="tel"],
+.address-form input[type="number"],
+.address-form select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.address-form input:hover,
+.address-form select:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.address-form input:focus,
+.address-form select:focus {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.address-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23bbbbbb' d='M1.4 0L6 4.6 10.6 0 12 1.4 6 7.4 0 1.4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.address-form select option {
+  background: #1f1f1f;
+  color: #fff;
+}
+
+.address-form input::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.address-form .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-save-address {
+  flex: 1;
+  min-width: 160px;
+  background: #fff;
+  color: #111;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-save-address:hover {
+  background: #e8e8e8;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-save-address:active {
+  transform: translateY(0);
+}
+
+.btn-cancel-address {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-cancel-address:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.address-form-section .message {
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  min-height: 1.2em;
+}
+
+@media (max-width: 560px) {
+  .addressFormContent {
+    padding: 90px 14px 36px;
+  }
+
+  .address-form-section .address-form {
+    padding: 20px 16px;
+  }
+
+  .address-form .two-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .address-form-section > h2 {
+    font-size: 22px;
+  }
+}
