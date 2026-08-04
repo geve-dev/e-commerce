@@ -1,5 +1,6 @@
 const repo = require('../models/modelStore')
 const { z } = require('zod');
+const { withPublicImage } = require('../utils/imageUrl');
 
 const storeSchema = z.object({
   store_name: z.string().min(1, 'Obrigatório').max(120),
@@ -122,7 +123,7 @@ async function reproveStore(req, res, next) {
 async function getProductsByStore(req, res, next) {
   try {
     const productsByStore = await repo.getProductsByStore();
-    return res.status(200).json(productsByStore);
+    return res.status(200).json(withPublicImage(productsByStore));
   } catch (e) {
     next(e)
   }

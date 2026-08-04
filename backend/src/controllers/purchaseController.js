@@ -1,6 +1,7 @@
 const repo = require('../models/modelPurchease');
 const storeRepo = require('../models/modelStore');
 const db = require('../config/db');
+const { withPublicImage } = require('../utils/imageUrl');
 
 async function createPurchase(req, res, next) {
     try {
@@ -134,7 +135,7 @@ async function getPurchasesByStore(req, res, next) {
     }
     
     const purchases = await repo.getPurchasesByStore(id_store);
-    return res.status(200).json(purchases);
+    return res.status(200).json(withPublicImage(purchases));
   } catch (e) {
     next(e);
   }

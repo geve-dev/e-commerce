@@ -2,7 +2,6 @@ const API_URL = 'http://localhost:3003';
 
 function getAuthHeaders() {
   return {
-    'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   };
 }
@@ -106,22 +105,25 @@ async function createProduct() {
   try {
     const form = document.getElementById('product-form');
     const id_store = new URLSearchParams(window.location.search).get('id_store');
-    const data = {
-      name: form.name.value.trim(),
-      description: form.description.value.trim(),
-      price: parseFloat(form.price.value) || 0,
-      stock: parseInt(form.stock.value, 10) || 0,
-      image: form.image.value || null,
-      category: form.category.value,
-      slug: form.slug.value.trim(),
-      status: form.status.value ,
-      id_store: parseInt(id_store, 0),
-    }
+    
+    const formData = new FormData();
+    formData.append('name', form.name.value.trim());
+    formData.append('description', form.description.value.trim());
+    formData.append('price', parseFloat(form.price.value) || 0);
+    formData.append('stock', parseInt(form.stock.value, 10) || 0);
+    formData.append('category', form.category.value);
+    formData.append('slug', form.slug.value.trim());
+    formData.append('id_store', parseInt(id_store, 10));
+
+    const file = form['image-input'].files[0];
+    if (file) formData.append('image', file);
+
+    console.log(formData);
 
     const res = await fetch(`${API_URL}/product`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify(data),
+      body: formData,
     });
 
     const product = await res.json();
@@ -152,7 +154,12 @@ async function createProduct() {
       window.location.href = `seller-dashboard.html?id=${id_store}`;
     }, 2000);
   } catch (error) {
-    console.error(error);
+    msg.textContent = 'Erro de conexão. Verifique o servidor.';
+     msg.className = 'message error';
+     console.error(error);
+   } finally {
+     btn.disabled = false;
+     btn.innerHTML = '<i class="fa-solid fa-check"></i> Adicionar Produto';
   }
 }
 
@@ -162,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  setupImageUpload('image-input', 'image-preview', 'clear-image', 'image_url');
+  setupImageUpload('image-input', 'image-preview', 'clear-image', 'image');
   setupSlugAutoFill();
 
   const form = document.getElementById('product-form');

@@ -258,7 +258,7 @@ async function renderProducts() {
         <h2 style="color:#e0e0e0;margin:0 0 20px;">Gerenciar Produtos (${products.length})</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
           ${products.map(prod => `
-            <div style="background:#1c1f26;border:1px solid #2d323d;border-radius:12px;overflow:hidden;">
+            <div style="background:#1c1f26;border:1px solid #2d323d;border-radius:12px;overflow:hidden;" onclick="window.location.href='product-details.html?slug=${prod.slug}'">
               <div style="height:140px;background:#242933;">
                 ${prod.image ? `<img src="${prod.image}" style="width:100%;height:100%;object-fit:cover;">` : ''}
               </div>

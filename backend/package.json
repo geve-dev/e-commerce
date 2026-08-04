@@ -1,22 +1,24 @@
 {
   "name": "e-comerce",
   "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/geve-dev/e-comerce#readme",
+  "bugs": {
+    "url": "https://github.com/geve-dev/e-comerce/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/geve-dev/e-comerce.git"
   },
-  "author": "geve",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/geve-dev/e-comerce/issues"
+  "author": "geve",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
   },
-  "homepage": "https://github.com/geve-dev/e-comerce#readme",
-  "keywords": [],
   "dependencies": {
     "axios": "^1.18.1",
     "bcrypt": "^6.0.0",
@@ -25,7 +27,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "zod": "^4.4.3",
+    "multer": "^2.2.3",
     "mysql2": "^3.20.0"
   },
-  "description": ""
+  "devDependencies": {}
 }

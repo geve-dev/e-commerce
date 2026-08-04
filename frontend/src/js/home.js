@@ -77,7 +77,7 @@ function renderStoresAndProducts(storesArray, productsArray) {
 
       <div class="st-products-grid">
         ${storeProducts.length > 0 ? storeProducts.map(prod => `
-          <div class="st-card">
+          <div class="st-card" onclick="window.location.href='product-details.html?slug=${prod.slug}'">
             <div class="st-card-img">
               <img src="${prod.image || 'assets/placeholder.png'}" alt="${prod.name}">
               <button class="st-add-btn" onclick="addToItems(${prod.id})" title="Adicionar ao carrinho">

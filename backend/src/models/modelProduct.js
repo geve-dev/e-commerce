@@ -33,7 +33,7 @@ async function deleteProduct(id) {
 
 async function getProductsByStore(data) {
   const query = `
-    SELECT p.*, s.*
+    SELECT p.*, s.*, p.slug as product_slug
       FROM products p
          , stores s
      where s.id = p.id_store

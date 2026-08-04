@@ -1,5 +1,6 @@
 const repo = require('../models/modelItem');
 const purchaseRepo = require('../models/modelPurchease');
+const { withPublicImage } = require('../utils/imageUrl');
 
 async function createItem(req, res, next) {
     try {
@@ -43,7 +44,7 @@ async function getItemsByPurchase(req, res, next) {
       }
 
       const items = await repo.findItemsByPurchase(purhcase.id);
-      return res.status(200).json({ message: 'Itens do carrinho', items });
+      return res.status(200).json({ message: 'Itens do carrinho', items: withPublicImage(items) });
     } catch (e) {
         next(e)
     }

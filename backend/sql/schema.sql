@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`users` (
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 18
+AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`purchase` (
     FOREIGN KEY (`id_user`)
     REFERENCES `ecommerce`.`users` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 23
+AUTO_INCREMENT = 29
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`stores` (
     REFERENCES `ecommerce`.`users` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -87,20 +87,27 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ecommerce`.`products` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(120) NULL DEFAULT NULL,
-  `description` VARCHAR(255) NULL DEFAULT NULL,
-  `price` DECIMAL(10,2) NULL DEFAULT NULL,
-  `stock` INT NULL DEFAULT NULL,
-  `image` VARCHAR(255) NULL DEFAULT NULL,
   `id_store` INT NOT NULL,
+  `name` VARCHAR(120) NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `stock` INT NOT NULL,
+  `image` VARCHAR(255) NOT NULL,
+  `category` VARCHAR(60) NOT NULL,
+  `slug` VARCHAR(120) NOT NULL,
+  `discount` DECIMAL(5,2) NULL DEFAULT NULL,
+  `status` ENUM('active', 'draft') NOT NULL DEFAULT 'active',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE INDEX `slug_UNIQUE` (`slug` ASC) VISIBLE,
   INDEX `fk_products_stores` (`id_store` ASC) VISIBLE,
   CONSTRAINT `fk_products_stores`
     FOREIGN KEY (`id_store`)
     REFERENCES `ecommerce`.`stores` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 19
+AUTO_INCREMENT = 28
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -162,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`payments` (
     FOREIGN KEY (`payment_method_id`)
     REFERENCES `ecommerce`.`payment_methods` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 9
 DEFAULT CHARACTER SET = utf8mb4;
 
 

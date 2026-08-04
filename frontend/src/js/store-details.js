@@ -16,7 +16,7 @@ async function getStoreBySlug() {
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('slug');
     if (!slug) {
-      document.getElementById('store-details-content').innerHTML = '<p class="st-empty">Slug não informado.</p>';
+      document.getElementById('store-details-content').innerHTML = '<p class="st-empty">Slug da loja não informado.</p>';
       return;
     }
 
@@ -39,7 +39,7 @@ async function getStoreBySlug() {
   }
 }
 
-  function renderStore(store, products) {
+function renderStore(store, products) {
   const container = document.getElementById('store-details-content');
   if (!container) return;
 
@@ -88,7 +88,7 @@ async function getStoreBySlug() {
     <div class="st-products-grid" id="products-grid">
       ${storeProducts.length > 0
         ? storeProducts.map(prod => `
-            <div class="st-card">
+            <div class="st-card" onclick="window.location.href='product-details.html?slug=${prod.slug}'">
               <div class="st-card-img">
                 <img src="${prod.image || 'assets/placeholder.png'}" alt="${prod.name}">
                 <button class="st-add-btn" onclick="addToItems(${prod.id})" title="Adicionar ao carrinho">

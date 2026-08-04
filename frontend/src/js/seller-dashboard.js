@@ -50,6 +50,10 @@ async function renderDashboard() {
 
   try {
     const id = new URLSearchParams(window.location.search).get('id');
+    if (!id) {
+      document.getElementById('seller-dashboard-content').innerHTML = '<p class="st-empty">Id não informado.</p>';
+      return;
+    }
     const res = await fetch(`${API_URL}/seller/dashboard/${id}`, { headers: getAuthHeaders() });
     const data = await res.json();
 
@@ -102,7 +106,7 @@ async function renderProdutos() {
       <div class="st-products-grid" id="products-grid">
         ${products.length > 0
           ? products.map(prod => `
-              <div class="st-card">
+              <div class="st-card" onclick="window.location.href='product-details.html?slug=${prod.product_slug}'">
                 <div class="st-card-img">
                   <img src="${prod.image || 'assets/placeholder.png'}" alt="${prod.name}">
                   <button class="st-add-btn"  onclick="window.location.href = 'product-edit-form.html'" title="Editar produto">
