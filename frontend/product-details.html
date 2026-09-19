@@ -12,7 +12,7 @@
     <header class="header">
         <h1 class="logo">E-Commerce</h1>
         <div class="btns">
-            <button onClick="window.location.href='index.html'">Voltar <i class="fas fa-arrow-right"></i></button>
+            <button onClick="window.history.back()">Voltar <i class="fas fa-arrow-right"></i></button>
         </div>
     </header>
 
@@ -20,6 +20,7 @@
         <div id="product-details-content">
             <p class="pd-loading">Carregando produto...</p>
         </div>
+        <p id="successMessage"></p>
     </section>
 
     <script src="src/js/product-details.js"></script>

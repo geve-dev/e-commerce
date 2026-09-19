@@ -12,7 +12,7 @@
     <header class="header">
         <h1 class="logo">E-Commerce</h1>
         <div class="btns">
-            <button onClick="window.location.href='my-stores.html'">Voltar <i class="fas fa-arrow-right"></i></button>
+            <button onClick="window.history.back()">Voltar <i class="fas fa-arrow-right"></i></button>
         </div>
     </header>
 
@@ -33,7 +33,7 @@
                                 <span class="upload-text" data-upload-icon="image-input">
                                     Clique para <strong>selecionar a imagem do produto</strong>
                                 </span>
-                                <img id="image-preview" class="image-preview" style="display:none" alt="Preview image">
+                                <img id="image-preview" class="image-preview" style="display:none" alt="">
                                 <button type="button" id="clear-image" class="clear-image-btn" style="display:none">
                                     <i class="fa-solid fa-times"></i>
                                 </button>
@@ -45,27 +45,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!--<div class="form-group">
-                        <label>Banner</label>
-                        <div class="image-upload-wrapper">
-                            <div class="image-upload-area" id="banner-area">
-                                <i class="fa-solid fa-image" data-upload-icon="banner-input"></i>
-                                <span class="upload-text" data-upload-icon="banner-input">
-                                    Clique para <strong>selecionar banner</strong>
-                                </span>
-                                <img id="banner-preview" class="image-preview" style="display:none" alt="Preview banner">
-                                <button type="button" id="clear-banner" class="clear-image-btn" style="display:none">
-                                    <i class="fa-solid fa-times"></i>
-                                </button>
-                                <input type="file" id="banner-input" accept="image/*">
-                            </div>
-                            <span class="image-preview-label">URL do banner <span class="optional">(opcional)</span></span>
-                            <div class="image-url-row">
-                                <input type="text" id="banner_url" name="banner_url" placeholder="https://...">
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
 
                 <p class="form-section-title">Informações do produto</p>
