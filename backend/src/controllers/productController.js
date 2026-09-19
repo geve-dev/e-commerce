@@ -71,20 +71,38 @@ async function getProductById(req, res, next) {
 
 async function updateProduct(req, res, next) {
     try {
-        const { id } = req.params;
-        const { name, description, price, stock, image } = req.body;
+      const { id } = req.params;
+      
+      const bodyResult = productSchema.safeParse(req.body);
+      if (!bodyResult.success) {
+        return res.status(400).json({ errors: bodyResult.error.issues });
+      }
 
-        if (!name || typeof name !== 'string' || !description || typeof description !== 'string' || !price || typeof price !== 'number' || !stock || typeof stock !== 'number' || !image || typeof image !== 'string') {
-            return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+
+      const { name, description, price, stock, id_store, category, slug } = bodyResult.data;
+
+      let imagePath;
+      if (req.file) {
+        const fileResult = imageFileSchema.safeParse(req.file);
+        if (!fileResult.success) {
+          return res.status(400).json({ errors: fileResult.error.issues });
         }
+        imagePath = `/uploads/products/${fileResult.data.filename}`;
+      } else {
+        // busca produto atual e reutiliza a image
+        const current = await repo.getProductById(id);
+        const product = Array.isArray(current) ? current[0] : current;
+        if (!product) return res.status(404).json({ message: 'Produto não encontrado' });
+        imagePath = product.image;
+      }
 
-        if (req.user.role !== 'adm' && req.user.role !== 'mod') {
-            return res.status(403).json({ message: "Você não tem permissão para atualizar produtos" });
-        }
+      if (await repo.findProductBySlugAndId(slug, id)) {
+        return res.status(400).json({ error: 'Slug já existe' });
+      }
 
-        const result = await repo.updateProduct(id, name, description, price, stock, image);
+      const result = await repo.updateProduct(id, name, description, price, stock, id_store, category, slug, imagePath);
 
-        return res.status(200).json({ product: result, message: "Produto atualizado com sucesso" });
+      return res.status(200).json({ product: result, message: "Produto atualizado com sucesso" });
     } catch (e) {
         next(e);
     }
@@ -94,9 +112,23 @@ async function deleteProduct(req, res, next) {
     try {
         const { id } = req.params;
 
-        if (req.user.role !== 'adm' && req.user.role !== 'mod') {
-            return res.status(403).json({ message: "Você não tem permissão para deletar produtos" });
-        }
+        const rows = await repo.getProductById(id);
+          const product = Array.isArray(rows) ? rows[0] : rows;
+          if (!product) {
+            return res.status(404).json({ message: 'Produto não encontrado' });
+          }
+      
+          // adm/mod podem tudo
+          if (req.user.role === 'adm' || req.user.role === 'mod') {
+            const result = await repo.deleteProduct(id);
+            return res.status(200).json({ product: result, message: 'Produto deletado com sucesso' });
+          }
+      
+          // seller: precisa ser dono da loja do produto
+          const store = await storeRepo.getStoreById(product.id_store);
+          if (!store || store.id_owner !== req.user.id) {
+            return res.status(403).json({ message: 'Você não tem permissão para deletar este produto' });
+          }
 
         const result = await repo.deleteProduct(id);
 

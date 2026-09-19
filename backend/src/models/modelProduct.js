@@ -18,10 +18,10 @@ async function getProductById(id) {
     return rows;
 }
 
-async function updateProduct(id, name, description, price, stock, image) {
-    const query = `UPDATE products SET name = ?, description = ?, price = ?, stock = ?, image = ? WHERE id = ?`
-    const [result] = await db.query(query, [name, description, price, stock, image, id]);
-    return { id: result.insertId, id, name, description, price, stock, image };
+async function updateProduct(id, name, description, price, stock, id_store, category, slug, image) {
+    const query = `UPDATE products SET name = ?, description = ?, price = ?, stock = ?, id_store = ?, category = ?, slug = ?, image = ? WHERE id = ?`
+    const [result] = await db.query(query, [name, description, price, stock, id_store, category, slug, image, id]);
+    return { id: result.insertId, id, name, description, price, stock, image, id_store, category, slug };
 }
 
 async function deleteProduct(id) {
@@ -33,7 +33,7 @@ async function deleteProduct(id) {
 
 async function getProductsByStore(data) {
   const query = `
-    SELECT p.*, s.*, p.slug as product_slug
+    SELECT p.*, s.*, p.slug as product_slug, p.id as product_id
       FROM products p
          , stores s
      where s.id = p.id_store
@@ -49,6 +49,13 @@ async function findProductBySlug(slug) {
   return rows;
 }
 
+async function findProductBySlugAndId(slug, id) {
+  const query = `SELECT * FROM products WHERE slug = ? AND id != ?`;
+  const [[rows]] = await db.query(query, [slug, id]);
+  return rows;
+}
+
+
 module.exports = {
   createProduct,
   getAllProducts,
@@ -56,5 +63,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getProductsByStore,
-  findProductBySlug
+  findProductBySlug,
+  findProductBySlugAndId
 };

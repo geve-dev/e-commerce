@@ -27,8 +27,8 @@ function getUserIdFromToken() {
 
 // ===== Navigation =====
 function navigateTo(section) {
-  document.querySelectorAll('.seller-nav a').forEach(el => el.classList.remove('active'));
-  const link = document.querySelector(`.seller-nav a[data-section="${section}"]`);
+  document.querySelectorAll('.admin-nav a').forEach(el => el.classList.remove('active'));
+  const link = document.querySelector(`.admin-nav a[data-section="${section}"]`);
   if (link) link.classList.add('active');
   document.getElementById('seller-dashboard-content').innerHTML = '';
 
@@ -65,7 +65,7 @@ async function renderDashboard() {
           ${[
             { label: 'Produtos', value: data.totalProducts, icon: 'fa-box', color: '#ecc94b' },
             { label: 'Pedidos', value: data.totalPurchases, icon: 'fa-shopping-cart', color: '#fc8181' },
-            { label: 'Faturamento', value: data.totalFaturamento, icon: 'fa-sack-dollar', color: '#68d391' },
+            { label: 'Faturamento', value: data.totalFaturamento === null ? 'R$ 0' : `${data.totalFaturamento}`, icon: 'fa-sack-dollar', color: '#68d391' },
           ].map(card => `
             <div style="background:#1c1f26;border:1px solid #2d323d;border-radius:12px;padding:24px;text-align:center;">
               <i class="fa-solid ${card.icon}" style="font-size:2rem;color:${card.color};margin-bottom:8px;"></i>
@@ -87,48 +87,98 @@ async function renderProdutos() {
     window.location.href = 'index.html';
     return;
   }
-  
+
   const container = document.getElementById('seller-dashboard-content');
   container.innerHTML = '<p style="text-align:center;color:#4a5568;">Carregando...</p>';
 
   try {
     const id = new URLSearchParams(window.location.search).get('id');
     if (!id) {
-      document.getElementById('seller-dashboard-content').innerHTML = '<p class="st-empty">Id não informado.</p>';
+      container.innerHTML = '<p class="st-empty">Id não informado.</p>';
       return;
     }
-    
+
     const res = await fetch(`${API_URL}/product/store/${id}`, { headers: getAuthHeaders() });
     const products = res.ok ? await res.json() : [];
-    
+
+    console.log(products);
+
     container.innerHTML = `
-      <p class="">Produtos:</p>
-      <div class="st-products-grid" id="products-grid">
-        ${products.length > 0
-          ? products.map(prod => `
-              <div class="st-card" onclick="window.location.href='product-details.html?slug=${prod.product_slug}'">
-                <div class="st-card-img">
-                  <img src="${prod.image || 'assets/placeholder.png'}" alt="${prod.name}">
-                  <button class="st-add-btn"  onclick="window.location.href = 'product-edit-form.html'" title="Editar produto">
-                    <i class="fa-solid fa-edit"></i>
-                  </button>
-                </div>
-                <div class="st-card-body">
-                  <span class="st-category">Destaque</span>
-                  <h3 class="st-product-name">${prod.name}</h3>
-                  <p class="st-price">R$ ${parseFloat(prod.price).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                </div>
+      <div class="seller-page">
+        <div class="seller-page-header">
+          <div>
+            <h2>Produtos</h2>
+            <p>${products.length} ${products.length === 1 ? 'item cadastrado' : 'itens cadastrados'}</p>
+          </div>
+          <button type="button" class="seller-add-btn" onclick="window.location.href='product-form.html?id_store=${id}'">
+            <i class="fa-solid fa-plus"></i> Novo produto
+          </button>
+        </div>
+
+        <div class="seller-products-grid">
+          ${products.length > 0
+            ? products.map((prod, index) => {
+                const stock = Number(prod.stock);
+                const stockClass = stock > 0 ? 'stock-ok' : 'stock-out';
+                const stockLabel = Number.isNaN(stock)
+                  ? '—'
+                  : stock > 0
+                    ? `${stock} em estoque`
+                    : 'Esgotado';
+                
+                const slug = prod.product_slug || prod.slug;
+                const id = prod.product_id;
+                const store_id = prod.id;
+
+                return `
+                  <div class="seller-product-card" style="animation-delay:${index * 0.04}s"
+                       onclick="window.location.href='product-details.html?slug=${slug}'">
+                    <div class="seller-product-img">
+                      ${prod.image
+                        ? `<img src="${prod.image}" alt="${prod.name}">`
+                        : `<div class="seller-product-img-placeholder"><i class="fa-solid fa-image"></i></div>`
+                      }
+                      <button type="button" class="seller-delete-btn"
+                              onclick="event.stopPropagation(); deleteProduct(${prod.product_id})"
+                              title="Deletar produto">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                      <button type="button" class="seller-edit-btn"
+                              onclick="event.stopPropagation(); window.location.href='product-edit-form.html?slug=${prod.product_slug}&product-id=${id}&store-id=${store_id}'"
+                              title="Editar produto">
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
+                    </div>
+                    <div class="seller-product-body">
+                      ${prod.category ? `<span class="seller-product-category">${prod.category}</span>` : ''}
+                      <h3 class="seller-product-name">${prod.name}</h3>
+                      <p class="seller-product-price">
+                        R$ ${parseFloat(prod.price).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </p>
+                      <div class="seller-product-meta">
+                        <span class="${stockClass}">${stockLabel}</span>
+                        ${prod.status ? `<span>${prod.status}</span>` : ''}
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')
+            : `
+              <div class="seller-empty">
+                <i class="fa-solid fa-box-open"></i>
+                Nenhum produto nesta loja ainda.
+                <br><br>
+                <button type="button" class="seller-add-btn" onclick="window.location.href='product-form.html?id_store=${id}'">
+                  <i class="fa-solid fa-plus"></i> Cadastrar primeiro produto
+                </button>
               </div>
-            `).join('')
-          : '<p class="st-empty">Nenhum produto disponível nesta loja.</p>'
-        }
+            `
+          }
+        </div>
       </div>
-        <button type="button" class="add-address-btn" onclick="window.location.href='product-form.html?id_store=${id}'">
-          <i class="fa-solid fa-plus"></i> Adicionar novo produto
-        </button>
     `;
   } catch (error) {
-    container.innerHTML = '<p style="text-align:center;color:#4a5568;">Erro ao carregar produtos.</p>';
+    container.innerHTML = '<p style="text-align:center;color:#fc8181;">Erro ao carregar produtos.</p>';
     console.error(error);
   }
 }
@@ -222,6 +272,21 @@ async function renderPedidos() {
     console.error(error);
   }
 }
+
+async function deleteProduct(id) {
+  if (!confirm('Excluir este produto?')) return;
+  try {
+    const res = await fetch(`${API_URL}/product/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    if (res.ok) { alert('Produto excluído.'); renderProdutos(); }
+    else alert('Erro ao excluir.');
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   navigateTo('dashboard');
