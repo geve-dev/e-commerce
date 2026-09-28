@@ -80,7 +80,7 @@ function renderStoresAndProducts(storesArray, productsArray) {
           <div class="st-card" onclick="window.location.href='product-details.html?slug=${prod.slug}'">
             <div class="st-card-img">
               <img src="${prod.image || 'assets/placeholder.png'}" alt="${prod.name}">
-              <button class="st-add-btn" onclick="addToItems(${prod.id})" title="Adicionar ao carrinho">
+              <button class="st-add-btn" onclick="event.stopPropagation(); addToItems(${prod.id})" title="Adicionar ao carrinho">
                 <i class="fa-solid fa-cart-plus"></i>
               </button>
             </div>
@@ -119,6 +119,12 @@ async function addToItems(id_product) {
 
     if (!res.ok) {
       throw new Error(`Falha ao adicionar item ao carrinho: ${res.status}`);
+    } else {
+      const successMessage = document.getElementById('successMessage');
+      successMessage.innerHTML = 'Item adicionado ao carrinho!';
+      setTimeout(() => {
+        successMessage.innerHTML = '';
+      }, 3000);
     }
 
     renderPerfil()

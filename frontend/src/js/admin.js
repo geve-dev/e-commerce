@@ -241,7 +241,9 @@ async function deleteUser(id) {
     const res = await fetch(`${API_URL}/user/${id}`, { method: 'DELETE', headers: authHeaders() });
     if (res.ok) { alert('Usuário deletado.'); renderUsers(); }
     else alert('Erro ao deletar.');
-  } catch (error) { alert('Erro de conexão.'); }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // ===== Products =====
@@ -268,7 +270,7 @@ async function renderProducts() {
                 <p style="color:#4a5568;font-size:13px;margin:6;">R$ ${parseFloat(prod.price).toFixed(2)} | Estoque: ${prod.stock}</p>
                 <p style="color:#4a5568;font-size:12px;margin:6px 0 0;">Produto 🆔 ${prod.id}</p>
                 <p style="color:#4a5568;font-size:12px;margin:6px 0 0;">Store 🆔 ${prod.id_store}</p>
-                <button onclick="deleteProduct(${prod.id})" style="margin-top:10px;background:rgba(245,101,101,0.15);color:#fc8181;border:1px solid rgba(245,101,101,0.3);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">Excluir</button>
+                <button onclick="event.stopPropagation(); deleteProduct(${prod.id})" style="margin-top:10px;background:rgba(245,101,101,0.15);color:#fc8181;border:1px solid rgba(245,101,101,0.3);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">Excluir</button>
               </div>
             </div>
           `).join('')}
@@ -283,7 +285,10 @@ async function renderProducts() {
 async function deleteProduct(id) {
   if (!confirm('Excluir este produto?')) return;
   try {
-    const res = await fetch(`${API_URL}/product/${id}`, { method: 'DELETE', headers: authHeaders() });
+    const res = await fetch(`${API_URL}/product/${id}`, {
+      method: 'DELETE',
+      headers: authHeaders()
+    });
     if (res.ok) { alert('Produto excluído.'); renderProducts(); }
     else alert('Erro ao excluir.');
   } catch (error) { alert('Erro de conexão.'); }
@@ -345,7 +350,9 @@ async function updatePurchaseStatus(id, status) {
     const res = await fetch(`${API_URL}/purchase/${id}/status`, { method: 'PUT', headers: { ...authHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
     if (res.ok) { alert('Status atualizado!'); renderPurchases(); }
     else alert('Erro ao atualizar status.');
-  } catch (error) { alert('Erro de conexão.'); }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

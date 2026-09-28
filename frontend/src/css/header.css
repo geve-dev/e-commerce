@@ -14,16 +14,19 @@ header {
     box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.7);
     margin-top: 10px;
     margin-bottom: 40px;
-    background-color: white;
+    background-color: #1c1f26;
+    color: #fff;
+    border: 1px solid #2d323d;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
 }
 
 #carrinho {
-    background-color: white;
-    color: black;
-    border: 1px solid #555;
+    background-color: grey;
+    color: white;
+    border: none;
     border-radius: 50px;
-    padding: 10px 10px;
+    padding: 10px 15px;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -45,7 +48,8 @@ header {
     transition: all 0.3s ease;
 }
     
-.btns button:hover {
+.btns button:hover,
+#carrinho:hover {
     background-color: #666;
     box-shadow: 0 1px 20px rgba(0, 0, 0, 0.8);
     transition: all 0.3s ease;
@@ -54,11 +58,12 @@ header {
 .badge {
   position: absolute;
   top: 8px;
-  right: 125px;
-  background: #666;
-  color: white;
+  right: 135px;
+  color: #666;
+  background: white;
   font-size: 12px;
   padding: 2px 6px;
   border-radius: 50%;
   font-weight: bold;
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.8);
 }

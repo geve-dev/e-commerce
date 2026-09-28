@@ -122,9 +122,13 @@ async function addToItems(id_product) {
 
     if (!res.ok) {
       throw new Error(`Falha ao adicionar item ao carrinho: ${res.status}`);
+    } else {
+      const successMessage = document.getElementById('successMessage');
+      successMessage.innerHTML = 'Item adicionado ao carrinho!';
+      setTimeout(() => {
+        successMessage.innerHTML = '';
+      }, 3000);
     }
-
-    renderPerfil()
     
   } catch (error) {
     console.error('Erro ao adicionar item:', error);
