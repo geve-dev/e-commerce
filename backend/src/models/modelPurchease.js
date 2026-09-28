@@ -1,26 +1,26 @@
 const db = require('../config/db');
 
 async function findOpenPurchaseByUserId(id_user) {
-    const query = `SELECT * FROM purchase WHERE id_user = ? AND status = 'aberto'`;
-    const [rows] = await db.query(query, [id_user]);
+    const query = `SELECT * FROM purchase WHERE id_user = $1 AND status = 'aberto'`;
+    const { rows } = await db.query(query, [id_user]);
     return rows[0];
 }
 
 async function createPurchase(id_user, all_price) {
-    const query = `INSERT INTO purchase (id_user, status, all_price) VALUES (?, 'aberto', ?)`
-    const [result] = await db.query(query, [id_user, all_price]);
-    return { id: result.insertId, id_user, status: 'aberto', all_price };
+    const query = `INSERT INTO purchase (id_user, status, all_price) VALUES ($1, 'aberto', $2) RETURNING id`
+    const result = await db.query(query, [id_user, all_price]);
+    return { id: result.rows[0].id, id_user, status: 'aberto', all_price };
 }
 
 async function findItemByPurchaseAndProduct(id_purchase, id_product) {
-    const query = `SELECT * FROM items WHERE id_purchase = ? AND id_product = ?`;
-    const [rows] = await db.query(query, [id_purchase, id_product]);
+    const query = `SELECT * FROM items WHERE id_purchase = $1 AND id_product = $2`;
+    const { rows } = await db.query(query, [id_purchase, id_product]);
     return rows[0];
 }
 
 async function addItemQuantity(id_item, quantity) {
-    const query = `UPDATE items SET quantity = ? WHERE id = ?`;
-    const [result] = await db.query(query, [quantity, id_item]);
+    const query = `UPDATE items SET quantity = $1 WHERE id = $2`;
+    const result = await db.query(query, [quantity, id_item]);
     return result;
 }
 
@@ -28,9 +28,9 @@ async function AllPrice(id_purchase) {
     const query = `
       SELECT COALESCE(SUM(quantity * unit_value), 0) AS total_value
       FROM items
-      WHERE id_purchase = ?
+      WHERE id_purchase = $1
     `;
-    const [rows] = await db.query(query, [id_purchase]);
+    const { rows } = await db.query(query, [id_purchase]);
     return rows.length > 0 ? rows[0].total_value : 0;
 }
 
@@ -41,13 +41,13 @@ async function getAllPurchases() {
     JOIN users u ON u.id = p.id_user
     ORDER BY p.datahora DESC
   `;
-  const [rows] = await db.query(query);
+  const { rows } = await db.query(query);
   return rows;
 }
 
 async function updatePurchaseStatus(id, status) {
-  const query = `UPDATE purchase SET status = ? WHERE id = ?`;
-  const [result] = await db.query(query, [status, id]);
+  const query = `UPDATE purchase SET status = $1 WHERE id = $2`;
+  const result = await db.query(query, [status, id]);
   return result;
 }
 
@@ -63,9 +63,9 @@ async function getPurchasesByStore(data) {
     JOIN purchase pu ON pu.id = i.id_purchase
     JOIN stores s ON s.id = p.id_store
     JOIN users u ON pu.id_user = u.id
-    WHERE pu.status != 'cancelado' AND s.id = ?
+    WHERE pu.status != 'cancelado' AND s.id = $1
   `;
-  const [rows] = await db.query(query, [data]);
+  const { rows } = await db.query(query, [data]);
   return rows;
 }
 

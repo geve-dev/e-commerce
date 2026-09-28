@@ -28,8 +28,8 @@ async function deletePurchase(req, res, next) {
         if (!purchase) return res.status(404).json({ message: 'Carrinho não encontrado' });
 
         // delete items then purchase
-        await db.query('DELETE FROM items WHERE id_purchase = ?', [purchase.id]);
-        await db.query('DELETE FROM purchase WHERE id = ?', [purchase.id]);
+        await db.query('DELETE FROM items WHERE id_purchase = $1', [purchase.id]);
+        await db.query('DELETE FROM purchase WHERE id = $1', [purchase.id]);
 
         return res.status(200).json({ message: 'Carrinho deletado com sucesso' });
     } catch (e) {
@@ -47,28 +47,28 @@ async function checkout(req, res, next) {
         const purchase = await repo.findOpenPurchaseByUserId(id_user);
         if (!purchase) return res.status(404).json({ message: 'Carrinho não encontrado' });
 
-        const connection = await db.getConnection();
+        const client = await db.connect();
         try {
-            await connection.beginTransaction();
+            await client.query('BEGIN');
 
             // busca itens com estoque atual
-            const [items] = await connection.query(`
+            const { rows: items } = await client.query(`
                 SELECT i.*, p.stock, p.price AS original_price
                 FROM items i
                 JOIN products p ON p.id = i.id_product
-                WHERE i.id_purchase = ?
+                WHERE i.id_purchase = $1
                 FOR UPDATE
             `, [purchase.id]);
 
             if (!items || items.length === 0) {
-                await connection.rollback();
+                await client.query('ROLLBACK');
                 return res.status(400).json({ message: 'Carrinho vazio' });
             }
 
             // valida estoque
             const insufficient = items.filter(it => Number(it.stock) < Number(it.quantity));
             if (insufficient.length > 0) {
-                await connection.rollback();
+                await client.query('ROLLBACK');
                 return res.status(400).json({ message: 'Estoque insuficiente para alguns produtos', details: insufficient.map(i => ({ id_product: i.id_product, requested: i.quantity, stock: i.stock })) });
             }
 
@@ -77,25 +77,28 @@ async function checkout(req, res, next) {
             total = Number(total.toFixed(2));
 
             // cria pagamento (status pending)
-            const [paymentRes] = await connection.query('INSERT INTO payments (order_id, user_id, payment_method_id, amount, status) VALUES (?, ?, ?, ?, ?)', [purchase.id, id_user, payment_method_id, total, 'pending']);
-            const paymentId = paymentRes.insertId;
+            const paymentRes = await client.query(
+                'INSERT INTO payments (order_id, user_id, payment_method_id, amount, status) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+                [purchase.id, id_user, payment_method_id, total, 'pending']
+            );
+            const paymentId = paymentRes.rows[0].id;
 
             // atualiza estoque dos produtos
             for (const it of items) {
-                await connection.query('UPDATE products SET stock = stock - ? WHERE id = ?', [it.quantity, it.id_product]);
+                await client.query('UPDATE products SET stock = stock - $1 WHERE id = $2', [it.quantity, it.id_product]);
             }
 
             // fecha compra
-            await connection.query('UPDATE purchase SET all_price = ?, status = ? WHERE id = ?', [total, 'fechado', purchase.id]);
+            await client.query('UPDATE purchase SET all_price = $1, status = $2 WHERE id = $3', [total, 'fechado', purchase.id]);
 
-            await connection.commit();
+            await client.query('COMMIT');
 
             return res.status(200).json({ message: 'Compra finalizada com sucesso', purchase: { id: purchase.id, all_price: total, status: 'fechado' }, payment: { id: paymentId, status: 'pending' } });
         } catch (err) {
-            await connection.rollback();
+            await client.query('ROLLBACK');
             throw err;
         } finally {
-            connection.release();
+            client.release();
         }
     } catch (e) {
         next(e);

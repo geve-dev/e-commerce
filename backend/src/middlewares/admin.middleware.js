@@ -16,7 +16,8 @@ function modOrAdminRequired(req, res, next) {
 
 async function storeOwnerRequired(req, res, next) {
   const storeId = req.params.id_store || req.body.id_store;
-  const [[store]] = await db.query(`SELECT id_owner FROM stores WHERE id = ?`, [storeId]);
+  const { rows } = await db.query(`SELECT id_owner FROM stores WHERE id = $1`, [storeId]);
+  const store = rows[0];
   if (!store) return res.status(404).json({ message: "Loja não encontrada" });
   if (req.user.id !== store.id_owner && req.user.role !== 'adm') {
     return res.status(403).json({ message: "Você não é o dono desta loja" });
