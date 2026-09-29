@@ -1,4 +1,3 @@
-const API_URL = 'https://e-commerce-p4yz.onrender.com';
 
 function getStatus() {
     const token = localStorage.getItem('token');

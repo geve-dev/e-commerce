@@ -1,4 +1,3 @@
-const API_URL = 'https://e-commerce-p4yz.onrender.com';
 
 const needLoginPopup = document.getElementById('needLoginPopup');
 const closeNeedLoginPopup = document.getElementById('closeNeedLoginPopup');

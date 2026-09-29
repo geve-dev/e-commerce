@@ -1,4 +1,3 @@
-const API_URL = 'https://e-commerce-p4yz.onrender.com';
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
 

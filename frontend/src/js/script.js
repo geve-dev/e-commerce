@@ -58,7 +58,7 @@ async function getPurchase() {
       return;
   }
   try {
-    const res = await fetch(`https://e-commerce-p4yz.onrender.com/item`, {
+    const res = await fetch(`${API_URL}/item`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ async function removeItem(id) {
     return;
   }
   try {
-    const res = await fetch(`https://e-commerce-p4yz.onrender.com/item`, {
+    const res = await fetch(`${API_URL}/item`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -162,7 +162,7 @@ async function addToItems(id_product) {
     return;
   }
   try {
-    const res = await fetch(`https://e-commerce-p4yz.onrender.com/item`, {
+    const res = await fetch(`${API_URL}/item`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ async function addToItems(id_product) {
 
 // Funções para carregar e renderizar produtos
 async function getProducts() {
-  let url = 'https://e-commerce-p4yz.onrender.com/product';
+  let url = `${API_URL}/product`;
   try {
     const res = await fetch(url);
     

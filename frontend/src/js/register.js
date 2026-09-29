@@ -1,4 +1,3 @@
-const API_URL = 'https://e-commerce-p4yz.onrender.com';
 
 async function register() {
   const form = document.getElementById('fr');
