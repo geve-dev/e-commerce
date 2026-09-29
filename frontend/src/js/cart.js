@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3003';
+const API_URL = 'https://e-commerce-p4yz.onrender.com';
 
 function getStatus() {
   return !!localStorage.getItem('token');
