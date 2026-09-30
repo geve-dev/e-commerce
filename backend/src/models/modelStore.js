@@ -86,6 +86,12 @@ async function getProductsByStore() {
   return products;
 };
 
+async function deleteStore(id) {
+  const query = `DELETE FROM stores WHERE id = $1 RETURNING id, store_name`;
+  const { rows } = await db.query(query, [id]);
+  return rows[0] || null;
+}
+
 module.exports = {
   postStore,
   getAllStores,
@@ -98,5 +104,6 @@ module.exports = {
   findStoreBySlug,
   approveStore,
   reproveStore,
-  storesByUser
+  storesByUser,
+  deleteStore
 };

@@ -15,5 +15,6 @@ router.get('/pending', authRequired, adminRequired, storeController.getStorePend
 router.get('/:slug', storeController.getStoreBySlug);
 router.put('/:id/approve', authRequired, adminRequired, storeController.approveStore);
 router.post('/:id/reprove', authRequired, adminRequired, storeController.reproveStore);
+router.delete('/:id', authRequired, storeController.deleteStore);
 
 module.exports = router;  

@@ -129,6 +129,35 @@ async function getProductsByStore(req, res, next) {
   }
 }
 
+async function deleteStore(req, res, next) {
+  try {
+    const storeId = req.params.id;
+
+    const rows = await repo.getStoreById(storeId);
+      const storeAlvo = Array.isArray(rows) ? rows[0] : rows;
+      if (!storeAlvo) {
+        return res.status(404).json({ message: 'Loja não encontrada' });
+      }
+  
+      // adm ou mod 
+      if (req.user.role === 'adm' || req.user.role === 'mod') {
+        const result = await repo.deleteStore(storeId);
+        return res.status(200).json({ store: result, message: 'Loja deletada' })
+      }
+  
+      // tem q ser o dono da Loja
+      if (String(storeAlvo.id_owner) !== String(req.user.id)) {
+        return res.status(403).json({ message: 'Você não tem permissão para deletar esta loja' });
+      }
+
+    const result = await repo.deleteStore(storeId)
+
+    return res.status(200).json({ store: result, message: 'Loja deletada' })
+  } catch (e) {
+    next(e)
+  }
+}
+
 module.exports = {
   postStore,
   getAllStores,
@@ -140,5 +169,6 @@ module.exports = {
   getStoreBySlug,
   getProductsByStore,
   approveStore,
-  reproveStore
+  reproveStore,
+  deleteStore
 };
